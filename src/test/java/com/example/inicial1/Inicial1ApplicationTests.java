@@ -18,7 +18,7 @@ class Inicial1ApplicationTests {
 	@Test
 	public void arrayVacio(){
 		String[] dna = {};
-		Assumptions.assumeFalse(servicio.isMutant(dna));
+		Assertions.assertThrows(NullPointerException.class,()->{servicio.isMutant(dna);});
 	}
 
 	@Test
@@ -29,7 +29,7 @@ class Inicial1ApplicationTests {
 				"BBBBB",
 				"BBBBB"
 		};
-		Assertions.assertThrows(IllegalArgumentException.class,()->{servicio.isMutant(dna);});
+		Assertions.assertThrows(ArrayIndexOutOfBoundsException.class,()->{servicio.isMutant(dna);});
 	}
 
 	@Test

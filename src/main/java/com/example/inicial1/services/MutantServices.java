@@ -16,13 +16,9 @@ public class MutantServices {
 
     @Transactional
     public Mutant save(Mutant entity) throws Exception {
-        try {
-            entity.setEsMutant(this.isMutant(entity.getDna()));
-            entity = mutantRepository.save(entity);
-            return entity;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        entity.setEsMutant(this.isMutant(entity.getDna()));
+        entity = mutantRepository.save(entity);
+        return entity;
     }
 
     //Esta función lo que hace es buscar una coincidencia, en caso de que se llame por segunda vez, me aseguro de no encontrar la misma
@@ -109,7 +105,7 @@ public class MutantServices {
         int longitudPrimera = dna.length;
 
         if (longitudPrimera == 0) {
-            return false; //En caso de que el arreglo esté vacío devolvemos un false instantáneo
+            throw new NullPointerException(); //En caso de que el arreglo esté vacío devolvemos un false instantáneo
         }
 
         //Este es un string que contiene las letras que pueden estar en cada palabra del DNA
@@ -119,14 +115,14 @@ public class MutantServices {
 
             //Con este condicional por palabra nos fijamos que tenga la longitud N del vector DNA
             if (palabra.length() != longitudPrimera) {
-                throw new IllegalArgumentException(); //Si alguna de las palabras es de longitud distinta no guardamos ni revisamos dna
+                throw new ArrayIndexOutOfBoundsException(); //Si alguna de las palabras es de longitud distinta no guardamos ni revisamos dna
             }
 
             //Este bucle verifica que las letras sean algunas de las indicadas
             for (char letra : palabra.toCharArray()) {
                 // Si alguna letra no está en "ATCG", el index of devuelve -1
                 if (elementosValidos.indexOf(letra) == -1) {
-                    throw new IllegalArgumentException(); //En caso de ser una letra no válida, retornamos falso y no guardamos ni analizamos el dna
+                    throw new IllegalArgumentException(); //En caso de ser una letra no válida, no guardamos ni analizamos el dna
                 }
             }
 
